@@ -4,6 +4,7 @@ const figlet = require('figlet');
 
 const files = require('./lib/files');
 const prompts = require('./lib/prompts');
+const repo = require('./lib/repo');
 const github = require('./lib/github');
 
 clear();
@@ -26,12 +27,13 @@ if (files.directoryExists('.git')) {
 
 const run = async () => {
     let token = github.getStoredGithubToken();
+    console.log(token);
     if (!token) {
         const octokit = await github.initializeOctoKit();
         token = await github.registerNewToken(octokit);
-        console.log(octokit);
     }
-    console.log(token);
+    const thing = await repo.createRemoteRepo();
+
 }
 
 run();
