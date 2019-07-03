@@ -4,6 +4,8 @@ const figlet = require('figlet');
 
 const files = require('./lib/files');
 const prompts = require('./lib/prompts');
+const github = require('./lib/github');
+
 clear();
 console.log(
     chalk.yellow(
@@ -11,14 +13,7 @@ console.log(
     )
 );
 
-const run = async () => {
-    const credentials = await prompts.askGithubCredentials();
-    console.log(credentials);
-    return;
-}
-
-(async () => await run())();
-
+/* 
 if (files.directoryExists('.git')) {
     console.log(
         chalk.red(
@@ -27,7 +22,19 @@ if (files.directoryExists('.git')) {
     );
     process.exit();
 }
+*/
 
+const run = async () => {
+    let token = github.getStoredGithubToken();
+    if (!token) {
+        const octokit = await github.initializeOctoKit();
+        token = await github.registerNewToken(octokit);
+        console.log(octokit);
+    }
+    console.log(token);
+}
+
+run();
 
 
 
