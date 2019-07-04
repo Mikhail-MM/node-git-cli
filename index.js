@@ -27,9 +27,8 @@ if (files.directoryExists('.git')) {
 
 const run = async () => {
     let token = github.getStoredGithubToken();
-    console.log(token);
     if (!token) {
-        const octokit = await github.initializeOctoKit();
+        const octokit = await github.initializeOctoKitWithCredentials();
         token = await github.registerNewToken(octokit);
     }
     const thing = await repo.createRemoteRepo();
